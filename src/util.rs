@@ -9,10 +9,6 @@ use image::{
     open
 };
 
-pub fn str_to_bytes<'a>(msg: &'a String) -> &'a [u8] {
-    msg.as_bytes()
-}
-
 pub fn file_to_bytes<'a>(mut file: File) -> Vec<u8> {
     let mut buffer = Vec::new();
     file.read_to_end(&mut buffer).expect("Could not read file");
@@ -37,27 +33,14 @@ pub fn bytes_to_file<'a>(bytes: &[u8], mut file: &'a File) -> &'a File {
     &file
 }
 
-pub fn file_as_dynamic_image(filename: String) -> DynamicImage {
-    let img = open(&Path::new(&filename)).unwrap();
-    img
+pub fn file_as_dynamic_image<P: AsRef<Path>>(filename: P) -> DynamicImage {
+    open(filename).unwrap()
 }
 
-pub fn file_as_image_buffer(filename: String) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
-    let img = open(&Path::new(&filename)).unwrap();
-    img.to_rgba()
+pub fn file_as_image_buffer<P: AsRef<Path>>(filename: P) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
+    open(filename).unwrap().to_rgba()
 }
 
-pub fn save_image_buffer(img: ImageBuffer<Rgba<u8>, Vec<u8>>, filename: String) {
-    let out_path = &Path::new(&filename);
-    let _ = img.save(out_path).unwrap();
+pub fn save_image_buffer<P: AsRef<Path>>(img: ImageBuffer<Rgba<u8>, Vec<u8>>, filename: P) {
+    img.save(filename).unwrap()
 }
-
-/*
-pub fn bytes_to_files(bytes: &[u8]) -> &[&File] {
-    //TODO
-}
-
-
-
-
-*/
