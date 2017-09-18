@@ -16,27 +16,19 @@ impl Decoder {
 	}
 
 	/// Decodes the image by reading the alpha channel of each pixel
-	pub fn decode_alpha(&self) -> Vec<u8> {
-		let mut out: Vec<u8> = Vec::new();
-
+	pub fn decode_alpha(&self, buf: &mut Vec<u8>) {
 		for (_, _, pixel) in self.img.enumerate_pixels() {
-			out.push(pixel.data[3]);
+			buf.push(pixel.data[3]);
 		}
-
-		out
 	}
 
 	/// Decodes the image by reading the bytes from each channel of each pixel
-	pub fn decode_image(&self) -> Vec<u8> {
-		let mut out: Vec<u8> = Vec::new();
-
+	pub fn decode_image(&self, buf: &mut Vec<u8>) {
 		for (_, _, pixel) in self.img.enumerate_pixels() {
-			out.push(pixel.data[0]);
-			out.push(pixel.data[1]);
-			out.push(pixel.data[2]);
-			out.push(pixel.data[3]);
+			buf.push(pixel.data[0]);
+			buf.push(pixel.data[1]);
+			buf.push(pixel.data[2]);
+			buf.push(pixel.data[3]);
 		}
-
-		out
 	}
 }
